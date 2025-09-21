@@ -9,7 +9,7 @@ Instructor: Eric Maniraguha
 (Short) Sales differ across regions; we need top products per region, customer segments, and monthly trends.
 
 ## Schema
-See `sql/01_create_tables.sql` and `sql/02_insert_sample_data.sql .
+See `sql/01_create_tables.sql` and `sql/02_insert_sample_data.sql` .
 
 ## Queries
 - Ranking: sql/03_queries_ranking.sql
