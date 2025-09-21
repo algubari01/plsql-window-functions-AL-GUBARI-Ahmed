@@ -29,7 +29,6 @@ All SQL results are saved in the `screenshots` folder (23+ images).
 All work in this repository is my original work. I used documentation and tutorials (listed in references). I did not copy AI-generated text without citation.
 
 ## References
-(Include at least 10 sources. Below are 10 useful references — list them in your README.)
 
 Oracle® Database SQL Language Reference (WINDOW functions section)
 
