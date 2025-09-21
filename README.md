@@ -1,51 +1,129 @@
-# plsql-window-functions-AL-GUBARI-Ahmed
-# PL/SQL Window Functions - Assignment
-Student: Ahmed Mohammed AL-GUBARI
-Id:25859
-Course: INSY 8311 - Database Development with PL/SQL
-Instructor: Eric Maniraguha
+# PL/SQL Window Functions Assignment
 
-## Problem
-(Short) Sales differ across regions; we need top products per region, customer segments, and monthly trends.
+## Course Information
+- **Course**: Database Development with PL/SQL (INSY 8311)
+- **Instructor**: Eric Maniraguha | eric.maniraguha@auca.ac.rw
+- **Assignment Date**: September 19, 2025
+- **Deadline**: September 29, 2025 (11:59 PM)
 
-## Schema
-See `sql/01_create_tables.sql` and `sql/02_insert_sample_data.sql` .
+---
 
-## Queries
-- Ranking: sql/03_queries_ranking.sql
-- Aggregate: sql/04_queries_aggregate.sql
-- Navigation: sql/05_queries_navigation.sql
-- Distribution: sql/06_queries_distribution.sql
+## Problem Definition
 
-## Key findings
-(Write two main findings after you run queries and inspect results, e.g.):
-1. Top 5 products in Kigali account for 65% of revenue — consider focusing inventory.
-2. Top 10% customers generate 45% of revenue — recommend VIP loyalty program.
+### Business Context
+This project focuses on a retail company analyzing its sales data to gain insights into customer behavior, product performance, and revenue trends.
 
-## Screenshots
-All SQL results are saved in the `screenshots` folder (23+ images).
+### Data Challenge
+The company needs to:
+1. Identify top-performing products and customers.
+2. Analyze sales trends over time.
+3. Segment customers based on their lifetime revenue.
 
-## Integrity statement
-All work in this repository is my original work. I used documentation and tutorials (listed in references). I did not copy AI-generated text without citation.
+### Expected Outcome
+The analysis will provide actionable insights for marketing strategies, inventory planning, and customer engagement.
+
+---
+
+## Success Criteria
+
+The following measurable goals were defined:
+1. **Top 5 products per region/quarter** → Using `RANK()`.
+2. **Running monthly sales totals** → Using `SUM() OVER()`.
+3. **Month-over-month growth** → Using `LAG()`/`LEAD()`.
+4. **Customer quartiles** → Using `NTILE(4)`.
+5. **3-month moving averages** → Using `AVG() OVER()`.
+
+---
+
+## Database Schema
+
+### Tables
+1. **Customers**: Stores customer information.
+   - **Key Columns**: `customer_id (PK)`, `cust_name`, `region`, `email`, `join_date`.
+2. **Products**: Stores product catalog information.
+   - **Key Columns**: `product_id (PK)`, `product_name`, `category`, `price`.
+3. **Transactions**: Stores sales records.
+   - **Key Columns**: `transaction_id (PK)`, `customer_id (FK)`, `product_id (FK)`, `sale_date`, `quantity`, `amount`, `promo_flag`.
+
+### ER Diagram
+*(### ER Diagram
+[![ER Diagram](Screenshots/er_diagram.png)](Screenshots/er_diagram.png))*
+
+---
+
+## Window Functions Implementation
+
+### 1. Ranking Functions
+#### Query
+See the SQL script: [Ranking Queries](SQL_Scripts/Ranking%20sql03_queries_ranking.sql.txt).
+
+#### Screenshot
+*(Attach the screenshot of the query result here, e.g., `Screenshots/ranking_query_result.png`)*
+
+#### Interpretation
+This query ranks customers by their total revenue within each region and quarter. The `ROW_NUMBER()` function ensures unique rankings for each customer.
+
+---
+
+### 2. Aggregate Functions
+#### Query
+See the SQL script: [Aggregate Queries](SQL_Scripts/Aggregate%20sql04_queries_aggregate.sql.txt).
+
+#### Screenshot
+*(Attach the screenshot of the query result here, e.g., `Screenshots/aggregate_query_result.png`)*
+
+#### Interpretation
+This query calculates the running total of monthly sales, providing insights into cumulative revenue trends over time.
+
+---
+
+### 3. Navigation Functions
+#### Query
+See the SQL script: [Navigation Queries](SQL_Scripts/Navigation%20sql05_queries_navigation.sql.txt).
+
+#### Screenshot
+*(Attach the screenshot of the query result here, e.g., `Screenshots/navigation_query_result.png`)*
+
+#### Interpretation
+This query calculates the month-over-month percentage change in sales, helping identify growth or decline trends.
+
+---
+
+### 4. Distribution Functions
+#### Query
+See the SQL script: [Distribution Queries](SQL_Scripts/Distribution%20sql06_queries_distribution.sql.txt).
+
+#### Screenshot
+*(Attach the screenshot of the query result here, e.g., `Screenshots/distribution_query_result.png`)*
+
+#### Interpretation
+This query segments customers into quartiles based on their lifetime revenue, enabling targeted marketing strategies.
+
+---
+
+## Results Analysis
+
+### Descriptive Analysis
+- **Patterns**: Customers in the top quartile contribute significantly to revenue.
+- **Trends**: Sales show consistent growth over the months.
+
+### Diagnostic Analysis
+- **Causes**: High revenue concentration in specific regions and product categories.
+- **Comparisons**: Quartile analysis reveals disparities in customer spending.
+
+### Prescriptive Analysis
+- **Recommendations**: Focus marketing efforts on high-value customers and underperforming regions.
+
+---
 
 ## References
 
-Oracle® Database SQL Language Reference (WINDOW functions section)
+1. [MySQL Documentation](https://dev.mysql.com/doc/)
+2. [Window Functions Tutorial](https://www.sqltutorial.org/sql-window-functions/)
+3. *(Add more references as needed)*
 
-Oracle® Database SQL Reference for NTILE, LAG, LEAD
+---
 
-Oracle Live SQL examples — window functions
+## Integrity Statement
 
-PostgreSQL documentation — Window Functions (good conceptual reading)
-
-"SQL Window Functions: The Definitive Guide" — tutorial pages (generic)
-
-W3Schools — SQL aggregate functions (for quick syntax)
-
-Stack Overflow threads (for examples of moving averages and frames)
-
-Official PL/SQL documentation (Oracle docs)
-
-University lecture slides on OLAP and analytic functions
-
-A simple business analytics blog on cohort analysis and RFM segmentation
+All sources were properly cited. Implementations and analysis represent original work. No AI-generated content was copied without attribution or adaptation.
