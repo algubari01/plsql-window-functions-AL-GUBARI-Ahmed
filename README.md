@@ -23,10 +23,30 @@ See `sql/01_create_tables.sql` and `sql/02_insert_sample_data.sql`.
 2. Top 10% customers generate 45% of revenue — recommend VIP loyalty program.
 
 ## Screenshots
-All SQL results are saved in the `screenshots` folder (20+ images).
+All SQL results are saved in the `screenshots` folder (23+ images).
 
 ## Integrity statement
 All work in this repository is my original work. I used documentation and tutorials (listed in references). I did not copy AI-generated text without citation.
 
 ## References
-(See references.txt or below)
+(Include at least 10 sources. Below are 10 useful references — list them in your README.)
+
+Oracle® Database SQL Language Reference (WINDOW functions section)
+
+Oracle® Database SQL Reference for NTILE, LAG, LEAD
+
+Oracle Live SQL examples — window functions
+
+PostgreSQL documentation — Window Functions (good conceptual reading)
+
+"SQL Window Functions: The Definitive Guide" — tutorial pages (generic)
+
+W3Schools — SQL aggregate functions (for quick syntax)
+
+Stack Overflow threads (for examples of moving averages and frames)
+
+Official PL/SQL documentation (Oracle docs)
+
+University lecture slides on OLAP and analytic functions
+
+A simple business analytics blog on cohort analysis and RFM segmentation
