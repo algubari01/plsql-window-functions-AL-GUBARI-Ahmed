@@ -1,0 +1,71 @@
+1.Monthly sales totals (no window)
+SELECT CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE) AS sale_month,
+       SUM(amount) AS month_sales
+FROM transactions
+GROUP BY CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE)
+ORDER BY sale_month;
+--------------------------------------------------------
+2.Cumulative running total (ROWS frame
+WITH monthly AS (
+  SELECT CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE) AS sale_month,
+         SUM(amount) AS month_sales
+  FROM transactions
+  GROUP BY CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE)
+)
+SELECT sale_month, month_sales,
+       SUM(month_sales) OVER (ORDER BY sale_month ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total
+FROM monthly
+ORDER BY sale_month;
+---------------------------------------------------------------------
+3.3-month moving average (ROWS frame)
+WITH monthly AS (
+  SELECT CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE) AS sale_month,
+         SUM(amount) AS month_sales
+  FROM transactions
+  GROUP BY CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE)
+)
+SELECT sale_month, month_sales,
+       AVG(month_sales) OVER (ORDER BY sale_month ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS ma_3m
+FROM monthly
+ORDER BY sale_month;
+-----------------------------------------------------------------------
+4.MIN to-date
+WITH monthly AS (
+  SELECT CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE) AS sale_month,
+         SUM(amount) AS month_sales
+  FROM transactions
+  GROUP BY CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE)
+)
+SELECT sale_month, month_sales,
+       MIN(month_sales) OVER (ORDER BY sale_month ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS min_to_date
+FROM monthly
+ORDER BY sale_month;
+--------------------------------------------------------------------------
+5.MAX to-date
+WITH monthly AS (
+  SELECT CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE) AS sale_month,
+         SUM(amount) AS month_sales
+  FROM transactions
+  GROUP BY CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE)
+)
+SELECT sale_month, month_sales,
+       MAX(month_sales) OVER (ORDER BY sale_month ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS max_to_date
+FROM monthly
+ORDER BY sale_month;
+----------------------------------------------------------------------------
+6,Compare cumulative SUM with a simple subquery cumulative (verification)
+SELECT m.sale_month, m.month_sales,
+       SUM(m.month_sales) OVER (ORDER BY m.sale_month) AS running_win,
+       (SELECT SUM(month_sales) FROM (
+           SELECT CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE) AS sale_month2,
+                  SUM(amount) AS month_sales
+           FROM transactions
+           GROUP BY sale_month2
+       ) x WHERE x.sale_month2 <= m.sale_month) AS running_subq
+FROM (
+  SELECT CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE) AS sale_month, SUM(amount) AS month_sales
+  FROM transactions
+  GROUP BY CAST(DATE_FORMAT(sale_date, '%Y-%m-01') AS DATE)
+) m
+ORDER BY sale_month;
+--------------------------------------------------------------------------------

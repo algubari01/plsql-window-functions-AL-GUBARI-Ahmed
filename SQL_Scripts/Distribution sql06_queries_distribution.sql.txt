@@ -1,0 +1,57 @@
+1.NTILE(4) quartiles
+WITH cust_total AS (
+  SELECT customer_id, SUM(amount) AS lifetime_rev
+  FROM transactions
+  GROUP BY customer_id
+)
+SELECT customer_id, lifetime_rev,
+       NTILE(4) OVER (ORDER BY lifetime_rev DESC) AS quartile
+FROM cust_total
+ORDER BY lifetime_rev DESC;
+-----------------------------------------------------------
+2.NTILE(10) deciles
+WITH cust_total AS (
+  SELECT customer_id, SUM(amount) AS lifetime_rev
+  FROM transactions
+  GROUP BY customer_id
+)
+SELECT customer_id, lifetime_rev,
+       NTILE(10) OVER (ORDER BY lifetime_rev DESC) AS decile
+FROM cust_total
+ORDER BY lifetime_rev DESC;
+-----------------------------------------------------------------
+3.CUME_DIST only
+WITH cust_total AS (
+  SELECT customer_id, SUM(amount) AS lifetime_rev
+  FROM transactions
+  GROUP BY customer_id
+)
+SELECT customer_id, lifetime_rev,
+       CUME_DIST() OVER (ORDER BY lifetime_rev DESC) AS cume_dist
+FROM cust_total
+ORDER BY lifetime_rev DESC;
+------------------------------------------------------------------
+4.PERCENT_RANK only
+WITH cust_total AS (
+  SELECT customer_id, SUM(amount) AS lifetime_rev
+  FROM transactions
+  GROUP BY customer_id
+)
+SELECT customer_id, lifetime_rev,
+       PERCENT_RANK() OVER (ORDER BY lifetime_rev DESC) AS pct_rank
+FROM cust_total
+ORDER BY lifetime_rev DESC;
+------------------------------------------------------------------------
+5.Combined distribution columns
+WITH cust_total AS (
+  SELECT customer_id, SUM(amount) AS lifetime_rev
+  FROM transactions
+  GROUP BY customer_id
+)
+SELECT customer_id, lifetime_rev,
+       NTILE(4) OVER (ORDER BY lifetime_rev DESC) AS quartile,
+       NTILE(10) OVER (ORDER BY lifetime_rev DESC) AS decile,
+       CUME_DIST() OVER (ORDER BY lifetime_rev DESC) AS cume_dist,
+       PERCENT_RANK() OVER (ORDER BY lifetime_rev DESC) AS pct_rank
+FROM cust_total
+ORDER BY lifetime_rev DESC;

@@ -1,0 +1,63 @@
+1.
+WITH cust_rev AS (
+  SELECT c.region,
+         QUARTER(t.sale_date) AS quarter_no,
+         t.customer_id,
+         SUM(t.amount) AS total_rev
+  FROM transactions t
+  JOIN customers c ON c.customer_id = t.customer_id
+  GROUP BY c.region, QUARTER(t.sale_date), t.customer_id
+)
+SELECT region, quarter_no, customer_id, total_rev,
+       ROW_NUMBER() OVER (PARTITION BY region, quarter_no ORDER BY total_rev DESC) AS row_num
+FROM cust_rev
+ORDER BY region, quarter_no, row_num;
+----------------------------------------------------
+2.
+WITH cust_rev AS (
+  SELECT c.region, QUARTER(t.sale_date) AS quarter_no, t.customer_id, SUM(t.amount) AS total_rev
+  FROM transactions t JOIN customers c ON c.customer_id = t.customer_id
+  GROUP BY c.region, QUARTER(t.sale_date), t.customer_id
+)
+SELECT region, quarter_no, customer_id, total_rev,
+       RANK() OVER (PARTITION BY region, quarter_no ORDER BY total_rev DESC) AS rank_val
+FROM cust_rev
+ORDER BY region, quarter_no, rank_val;
+-----------------------------------------------------------------
+3.
+WITH cust_rev AS (
+  SELECT c.region, QUARTER(t.sale_date) AS quarter_no, t.customer_id, SUM(t.amount) AS total_rev
+  FROM transactions t JOIN customers c ON c.customer_id = t.customer_id
+  GROUP BY c.region, QUARTER(t.sale_date), t.customer_id
+)
+SELECT region, quarter_no, customer_id, total_rev,
+       DENSE_RANK() OVER (PARTITION BY region, quarter_no ORDER BY total_rev DESC) AS dense_rank_val
+FROM cust_rev
+ORDER BY region, quarter_no, dense_rank_val;
+-----------------------------------------------------------------
+4.
+WITH cust_rev AS (
+  SELECT c.region, QUARTER(t.sale_date) AS quarter_no, t.customer_id, SUM(t.amount) AS total_rev
+  FROM transactions t JOIN customers c ON c.customer_id = t.customer_id
+  GROUP BY c.region, QUARTER(t.sale_date), t.customer_id
+)
+SELECT region, quarter_no, customer_id, total_rev,
+       PERCENT_RANK() OVER (PARTITION BY region, quarter_no ORDER BY total_rev DESC) AS pct_rank
+FROM cust_rev
+ORDER BY region, quarter_no, pct_rank;
+-------------------------------------------------------------------
+5.
+WITH cust_rev AS (
+  SELECT c.region, QUARTER(t.sale_date) AS quarter_no, t.customer_id, SUM(t.amount) AS total_rev
+  FROM transactions t JOIN customers c ON c.customer_id = t.customer_id
+  GROUP BY c.region, QUARTER(t.sale_date), t.customer_id
+),
+ranked AS (
+  SELECT cust_rev.*,
+         ROW_NUMBER() OVER (PARTITION BY region, quarter_no ORDER BY total_rev DESC) AS rn
+  FROM cust_rev
+)
+SELECT region, quarter_no, customer_id, total_rev
+FROM ranked
+WHERE rn <= 5
+ORDER BY region, quarter_no, total_rev DESC;

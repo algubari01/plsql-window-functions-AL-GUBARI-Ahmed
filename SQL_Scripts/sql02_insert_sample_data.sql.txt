@@ -1,0 +1,17 @@
+-- Sample customers
+INSERT INTO customers (customer_id, cust_name, region, email, join_date) VALUES 
+(1001, 'John Doe', 'Kigali', 'john@example.com', '2024-01-10'),
+(1002, 'Amina Uwimana', 'Musanze', 'amina@example.rw', '2024-03-05'),
+(1003, 'Eric Kamali', 'Butare', 'eric@example.rw', '2024-02-20');
+
+-- Sample products
+INSERT INTO products (product_id, product_name, category, price) VALUES
+(2001, 'Smartphone X1', 'Mobile', 250000.00),
+(2002, 'Laptop Pro 15', 'Laptop', 850000.00),
+(2003, 'Wireless Earbuds', 'Accessory', 45000.00);
+
+-- Sample transactions
+INSERT INTO transactions (transaction_id, customer_id, product_id, sale_date, quantity, amount, promo_flag) VALUES
+(3001, 1001, 2001, '2024-01-15', 1, 250000.00, 'N'),
+(3002, 1002, 2003, '2024-02-10', 2, 90000.00, 'Y'),
+(3003, 1001, 2002, '2024-03-03', 1, 850000.00, 'N');
