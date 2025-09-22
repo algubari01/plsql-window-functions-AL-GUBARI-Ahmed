@@ -46,7 +46,7 @@ The following measurable goals were defined:
    - **Key Columns**: `transaction_id (PK)`, `customer_id (FK)`, `product_id (FK)`, `sale_date`, `quantity`, `amount`, `promo_flag`.  
 
 ### ER Diagram
-*(Refer to the ER diagram in the `Screenshots` folder.)*  
+*(Refer to the ER diagram in the `ER_digram` folder.)*  
 
 ---
 
